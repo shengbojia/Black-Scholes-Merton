@@ -1,3 +1,4 @@
+# IDE specific stuff
 /.idea
 /out
 *.iml

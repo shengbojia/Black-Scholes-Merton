@@ -16,9 +16,6 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
-
-
-
 public class BlackScholesCalculator {
 
     final private static MathContext DEFAULT_PRECISION = new MathContext(8, RoundingMode.HALF_EVEN);
