@@ -1,4 +1,4 @@
-package bigmath.stream;
+package com.shengbojia.bigmath.stream;
 
 import java.util.Comparator;
 import java.util.Spliterator;
@@ -7,8 +7,8 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import bigmath.BigFloat;
-import bigmath.BigFloat.Context;
+import com.shengbojia.bigmath.BigFloat;
+import com.shengbojia.bigmath.BigFloat.Context;
 
 /**
  * Provides constructor methods for streams of {@link BigFloat} elements. 

@@ -1,13 +1,13 @@
-package calculator;
+package com.shengbojia.calculator;
 
-import static bigmath.BigDecimalMath.MINUS_ONE;
-import static bigmath.BigDecimalMath.THREE;
-import static bigmath.BigDecimalMath.TWO;
-import static bigmath.BigDecimalMath.exp;
-import static bigmath.BigDecimalMath.log;
-import static bigmath.BigDecimalMath.sqrt;
-import static bigmath.BigDecimalMath.square;
-import static bigmath.BigDecimalMath.tau;
+import static com.shengbojia.bigmath.BigDecimalMath.MINUS_ONE;
+import static com.shengbojia.bigmath.BigDecimalMath.THREE;
+import static com.shengbojia.bigmath.BigDecimalMath.TWO;
+import static com.shengbojia.bigmath.BigDecimalMath.exp;
+import static com.shengbojia.bigmath.BigDecimalMath.log;
+import static com.shengbojia.bigmath.BigDecimalMath.sqrt;
+import static com.shengbojia.bigmath.BigDecimalMath.square;
+import static com.shengbojia.bigmath.BigDecimalMath.tau;
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
@@ -28,6 +28,10 @@ public class BlackScholesCalculator {
 
     public BlackScholesCalculator(MathContext precision) {
         this.precision = precision;
+    }
+
+    public MathContext getPrecision() {
+        return precision;
     }
 
     public BigDecimal callPricing(BigDecimal stockPrice, BigDecimal strikePrice, BigDecimal timeToMaturity,

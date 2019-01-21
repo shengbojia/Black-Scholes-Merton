@@ -1,9 +1,9 @@
-package bigmath.internal;
+package com.shengbojia.bigmath.internal;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-import bigmath.BigRational;
+import com.shengbojia.bigmath.BigRational;
 
 /**
  * Calculates cosinus hyperbolicus using the Taylor series.

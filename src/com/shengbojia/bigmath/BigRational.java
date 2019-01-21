@@ -1,4 +1,4 @@
-package bigmath;
+package com.shengbojia.bigmath;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

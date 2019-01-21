@@ -1,6 +1,6 @@
-package bigmath;
+package com.shengbojia.bigmath;
 
-import static bigmath.BigComplex.I;
+import static com.shengbojia.bigmath.BigComplex.I;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

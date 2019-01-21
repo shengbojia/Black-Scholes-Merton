@@ -1,33 +1,33 @@
-package bigmath.internal;
+package com.shengbojia.bigmath.internal;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-import bigmath.BigRational;
+import com.shengbojia.bigmath.BigRational;
 
 /**
- * Calculates sinus using the Maclaurin series.
+ * Calculates cosinus using the Maclaurin series.
  * 
  * <p>See <a href="https://de.wikipedia.org/wiki/Taylorreihe">Wikipedia: Taylorreihe</a></p>
  * 
  * <p>No argument checking or optimizations are done.
  * This implementation is <strong>not</strong> intended to be called directly.</p>
  */
-public class SinCalculator extends SeriesCalculator {
+public class CosCalculator extends SeriesCalculator {
 
-	public static final SinCalculator INSTANCE = new SinCalculator();
+	public static final CosCalculator INSTANCE = new CosCalculator();
 	
 	private int n = 0;
 	private boolean negative = false;
-	private BigRational factorial2nPlus1 = BigRational.ONE;
+	private BigRational factorial2n = BigRational.ONE;
 	
-	private SinCalculator() {
+	private CosCalculator() {
 		super(true);
 	}
 	
 	@Override
 	protected BigRational getCurrentFactor() {
-		BigRational factor = factorial2nPlus1.reciprocal();
+		BigRational factor = factorial2n.reciprocal();
 		if (negative) {
 			factor = factor.negate();
 		}
@@ -37,13 +37,12 @@ public class SinCalculator extends SeriesCalculator {
 	@Override
 	protected void calculateNextFactor() {
 		n++;
-		factorial2nPlus1 = factorial2nPlus1.multiply(2 * n);
-		factorial2nPlus1 = factorial2nPlus1.multiply(2 * n + 1);
+		factorial2n = factorial2n.multiply(2 * n - 1).multiply(2 * n);
 		negative = !negative;
 	}
 	
 	@Override
 	protected PowerIterator createPowerIterator(BigDecimal x, MathContext mathContext) {
-		return new PowerTwoNPlusOneIterator(x, mathContext);
+		return new PowerTwoNIterator(x, mathContext);
 	}
 }

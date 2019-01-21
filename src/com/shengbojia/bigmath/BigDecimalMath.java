@@ -1,4 +1,4 @@
-package bigmath;
+package com.shengbojia.bigmath;
 
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.TEN;
@@ -9,12 +9,12 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.*;
 
-import bigmath.internal.AsinCalculator;
-import bigmath.internal.CosCalculator;
-import bigmath.internal.CoshCalculator;
-import bigmath.internal.ExpCalculator;
-import bigmath.internal.SinCalculator;
-import bigmath.internal.SinhCalculator;
+import com.shengbojia.bigmath.internal.AsinCalculator;
+import com.shengbojia.bigmath.internal.CosCalculator;
+import com.shengbojia.bigmath.internal.CoshCalculator;
+import com.shengbojia.bigmath.internal.ExpCalculator;
+import com.shengbojia.bigmath.internal.SinCalculator;
+import com.shengbojia.bigmath.internal.SinhCalculator;
 
 /**
  * Provides advanced functions operating on {@link BigDecimal}s.

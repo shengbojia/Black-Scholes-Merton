@@ -1,4 +1,4 @@
-package bigmath.internal;
+package com.shengbojia.bigmath.internal;
 
 import static java.math.BigDecimal.ONE;
 
@@ -7,7 +7,7 @@ import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
-import bigmath.BigRational;
+import com.shengbojia.bigmath.BigRational;
 
 /**
  * Utility class to calculate taylor series efficiently until the maximum error (as defined by the precision in the {@link MathContext} is reached.
@@ -28,7 +28,7 @@ public abstract class SeriesCalculator {
 	}
 	
 	/**
-	 * Constructs a {@link SeriesCalculator} with control over whether the sum terms are calculated in pairs.
+	 * Constructs a {@link SeriesCalculator} with com.shengbojia.control over whether the sum terms are calculated in pairs.
 	 * 
 	 * <p>Calculation of pairs is useful for taylor series where the terms alternate the sign.
 	 * In these cases it is more efficient to calculate two terms at once check then whether the acceptable error has been reached.</p>

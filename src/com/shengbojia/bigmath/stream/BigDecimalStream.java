@@ -1,4 +1,4 @@
-package bigmath.stream;
+package com.shengbojia.bigmath.stream;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import bigmath.BigDecimalMath;
+import com.shengbojia.bigmath.BigDecimalMath;
 
 /**
  * Provides constructor methods for streams of {@link BigDecimal} elements. 
