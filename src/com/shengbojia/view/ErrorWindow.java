@@ -8,7 +8,7 @@ public class ErrorWindow {
 
     public ErrorWindow(String error) {
         frame = new JFrame("Error!");
-        frame.setSize(300, 200);
+        frame.setSize(400, 200);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         error = "<html><font color=red>" + error + "</font></html>";
@@ -16,7 +16,7 @@ public class ErrorWindow {
 
         frame.add(errorMsg);
 
-        frame.setLocation(200, 200);
+        frame.setLocation(500, 200);
         frame.setVisible(true);
     }
 }

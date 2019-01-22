@@ -12,12 +12,13 @@ public class MainWindow {
 
     public MainWindow() {
         frame = new JFrame("Calculator");
-        frame.setSize(500, 500);
+        //frame.setSize(500, 500);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         createComponents();
 
         frame.setLocation(100, 100);
+        frame.pack();
         frame.setVisible(true);
     }
 
