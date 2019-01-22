@@ -44,6 +44,9 @@ public class Controller implements ActionListener {
             window.getOutputPanel().getCallLabel().setText(callOutput);
             window.getOutputPanel().getPutLabel().setText(putOutput);
 
+            // TODO: Make output more sophisticated
+            // TODO: Consider checking for empty fields first
+
         } catch (AbstractParameterException e1) {
             new ErrorWindow(e1.toString());
         }
@@ -85,7 +88,5 @@ public class Controller implements ActionListener {
 
         return BigDecimal.valueOf(result);
     }
-
-    // TODO: Validate input from inputPanel
 
 }

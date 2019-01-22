@@ -7,6 +7,8 @@ public class OutputPanel {
     private JLabel callLabel;
     private JLabel putLabel;
 
+    // TODO: Make this better looking
+
     public OutputPanel() {
         panel = new JPanel();
         callLabel = new JLabel("call");
