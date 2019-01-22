@@ -1,17 +1,72 @@
 package com.shengbojia.control;
 
 import com.shengbojia.calculator.BlackScholesCalculator;
+import com.shengbojia.control.errors.AbstractParameterException;
+import com.shengbojia.control.errors.EmptyParameterException;
+import com.shengbojia.control.errors.FormatParameterException;
+import com.shengbojia.control.errors.IllegalParameterException;
+import com.shengbojia.view.InputFieldAndLabel;
+import com.shengbojia.view.MainWindow;
 
-public class Controller {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.text.ParseException;
+
+public class Controller implements ActionListener {
     private BlackScholesCalculator calculator;
+    private MainWindow window;
 
-    public Controller() {
-        calculator = new BlackScholesCalculator();
+    public Controller(BlackScholesCalculator calculator, MainWindow window) {
+        this.calculator = calculator;
+        this.window = window;
+        window.addController(this);
     }
 
-    public void start() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // TODO: Take input when button is pressed, validate them, convert them, and input them into calculator
+
 
     }
 
+    private double takeInput(InputFieldAndLabel input) throws AbstractParameterException {
+        if (input.getInputField().getText().isBlank()) {
+            throw new EmptyParameterException(input.getInputName());
+        }
+
+        double result;
+        try {
+            result = Double.parseDouble(input.getInputField().getText());
+            return result;
+        } catch (NumberFormatException e) {
+            throw new FormatParameterException(input.getInputName());
+        }
+    }
+
+    private BigDecimal convertInput(InputFieldAndLabel input) throws AbstractParameterException {
+        double result = takeInput(input);
+        String inputParamName = input.getInputName();
+
+        if (result < -9999 || result > 9999) {
+            throw new IllegalParameterException(inputParamName, "more reasonable");
+        } else if (inputParamName.equals("Risk-free rate")) {
+            if (result < -10) {
+                throw new IllegalParameterException(inputParamName, "greater than -10");
+            } else if (result > 10) {
+                throw new IllegalParameterException(inputParamName, "less than 10");
+            }
+        } else if ((inputParamName.equals("Maturity") || inputParamName.equals("Volatility"))
+                && result < 0) {
+            throw new IllegalParameterException(inputParamName, "non-negative");
+        } else if ((inputParamName.equals("Stock price") || inputParamName.equals("Strike price"))
+                && result <= 0) {
+            throw new IllegalParameterException(inputParamName, "positive");
+        }
+
+        return BigDecimal.valueOf(result);
+    }
+
+    // TODO: Validate input from inputPanel
 
 }

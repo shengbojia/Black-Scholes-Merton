@@ -34,6 +34,17 @@ public class BlackScholesCalculator {
         return precision;
     }
 
+    /*
+    private void validateParams(BigDecimal stockPrice, BigDecimal strikePrice, BigDecimal timeToMaturity,
+                                BigDecimal volatility, BigDecimal riskFreeRate) {
+        if (stockPrice.compareTo(ZERO) <= 0) {
+            throw new IllegalArgumentException("Stock price must be positive.");
+        }
+
+        if ()
+    }
+    */
+
     public BigDecimal callPricing(BigDecimal stockPrice, BigDecimal strikePrice, BigDecimal timeToMaturity,
                                   BigDecimal volatility, BigDecimal riskFreeRate) {
         BigDecimal minuend = stockPrice
