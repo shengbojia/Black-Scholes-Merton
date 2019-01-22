@@ -1,7 +1,6 @@
 package com.shengbojia.control.errors;
 
 public class FormatParameterException extends AbstractParameterException {
-    private String parameterName;
 
     public FormatParameterException(String parameterName) {
         super(parameterName);
@@ -9,6 +8,6 @@ public class FormatParameterException extends AbstractParameterException {
 
     @Override
     public String toString() {
-        return "Please enter a valid decimal value for the " + parameterName + " field.";
+        return "Please enter a valid decimal value for the " + super.getParameterName() + " field.";
     }
 }

@@ -5,13 +5,14 @@ import com.shengbojia.control.errors.AbstractParameterException;
 import com.shengbojia.control.errors.EmptyParameterException;
 import com.shengbojia.control.errors.FormatParameterException;
 import com.shengbojia.control.errors.IllegalParameterException;
+import com.shengbojia.view.ErrorWindow;
 import com.shengbojia.view.InputFieldAndLabel;
 import com.shengbojia.view.MainWindow;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.text.ParseException;
+import java.text.NumberFormat;
 
 public class Controller implements ActionListener {
     private BlackScholesCalculator calculator;
@@ -25,9 +26,27 @@ public class Controller implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO: Take input when button is pressed, validate them, convert them, and input them into calculator
+        try {
+            BigDecimal stockPrice = convertInput(window.getInputPanel().getStock());
+            BigDecimal strikePrice = convertInput(window.getInputPanel().getStrike());
+            BigDecimal timeToMaturity = convertInput(window.getInputPanel().getMaturity());
+            BigDecimal volatility = convertInput(window.getInputPanel().getVolatility());
+            BigDecimal riskFreeRate = convertInput(window.getInputPanel().getRiskFree());
 
+            BigDecimal callPrice = calculator.callPricing(stockPrice, strikePrice, timeToMaturity,
+                    volatility, riskFreeRate);
+            BigDecimal putPrice = calculator.putPricing(stockPrice, strikePrice, timeToMaturity,
+                    volatility, riskFreeRate);
 
+            String callOutput = NumberFormat.getCurrencyInstance().format(callPrice);
+            String putOutput = NumberFormat.getCurrencyInstance().format(putPrice);
+
+            window.getOutputPanel().getCallLabel().setText(callOutput);
+            window.getOutputPanel().getPutLabel().setText(putOutput);
+
+        } catch (AbstractParameterException e1) {
+            new ErrorWindow(e1.toString());
+        }
     }
 
     private double takeInput(InputFieldAndLabel input) throws AbstractParameterException {

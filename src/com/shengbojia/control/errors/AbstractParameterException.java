@@ -7,6 +7,10 @@ abstract public class AbstractParameterException extends Throwable {
         this.parameterName = parameterName;
     }
 
+    public String getParameterName() {
+        return parameterName;
+    }
+
     @Override
     public String toString() {
         return parameterName + " field is invalid!";
