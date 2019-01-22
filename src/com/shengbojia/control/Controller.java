@@ -70,6 +70,8 @@ public class Controller implements ActionListener {
         double result = takeInput(input);
         String inputParamName = input.getInputName();
 
+        //TODO: Take interest rate as whole number %
+
         if (result < -9999 || result > 9999) {
             throw new IllegalParameterException(inputParamName, "more reasonable");
         } else if (inputParamName.equals("Risk-free rate")) {

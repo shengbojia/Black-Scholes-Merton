@@ -8,7 +8,9 @@ public class Main {
     public static void main(String[] args) {
         BlackScholesCalculator calculator = new BlackScholesCalculator();
         MainWindow window = new MainWindow();
+
         Controller controller = new Controller(calculator, window);
 
+        // TODO: Document everything!
     }
 }
