@@ -6,9 +6,11 @@ import java.awt.event.ActionListener;
 
 public class MainWindow {
     private JFrame frame;
+
     private InputPanel inputPanel;
-    private OutputPanel outputPanel;
     private JButton pressToCalculate;
+    private OutputPanel outputPanel;
+
 
     public MainWindow() {
         frame = new JFrame("Calculator");

@@ -8,6 +8,7 @@ import static com.shengbojia.bigmath.BigDecimalMath.log;
 import static com.shengbojia.bigmath.BigDecimalMath.sqrt;
 import static com.shengbojia.bigmath.BigDecimalMath.square;
 import static com.shengbojia.bigmath.BigDecimalMath.tau;
+
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
@@ -16,11 +17,14 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
+/**
+ * Pricing calculator for vanilla European options
+ */
 public class BlackScholesCalculator {
 
-    final private static MathContext DEFAULT_PRECISION = new MathContext(8, RoundingMode.HALF_EVEN);
+    private static final MathContext DEFAULT_PRECISION = new MathContext(8, RoundingMode.HALF_EVEN);
 
-    final private MathContext precision;
+    private final MathContext precision;
 
     public BlackScholesCalculator() {
         this(DEFAULT_PRECISION);
@@ -33,17 +37,6 @@ public class BlackScholesCalculator {
     public MathContext getPrecision() {
         return precision;
     }
-
-    /*
-    private void validateParams(BigDecimal stockPrice, BigDecimal strikePrice, BigDecimal timeToMaturity,
-                                BigDecimal volatility, BigDecimal riskFreeRate) {
-        if (stockPrice.compareTo(ZERO) <= 0) {
-            throw new IllegalArgumentException("Stock price must be positive.");
-        }
-
-        if ()
-    }
-    */
 
     public BigDecimal callPricing(BigDecimal stockPrice, BigDecimal strikePrice, BigDecimal timeToMaturity,
                                   BigDecimal volatility, BigDecimal riskFreeRate) {

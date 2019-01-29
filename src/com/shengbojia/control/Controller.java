@@ -41,10 +41,9 @@ public class Controller implements ActionListener {
             String callOutput = NumberFormat.getCurrencyInstance().format(callPrice);
             String putOutput = NumberFormat.getCurrencyInstance().format(putPrice);
 
-            window.getOutputPanel().getCallLabel().setText(callOutput);
-            window.getOutputPanel().getPutLabel().setText(putOutput);
+            window.getOutputPanel().getCallDisplay().setText(callOutput);
+            window.getOutputPanel().getPutDisplay().setText(putOutput);
 
-            // TODO: Make output more sophisticated
             // TODO: Consider checking for empty fields first
 
         } catch (AbstractParameterException e1) {
@@ -70,8 +69,6 @@ public class Controller implements ActionListener {
         double result = takeInput(input);
         String inputParamName = input.getInputName();
 
-        //TODO: Take interest rate as whole number %
-
         if (result < -9999 || result > 9999) {
             throw new IllegalParameterException(inputParamName, "more reasonable");
         } else if (inputParamName.equals("Risk-free rate")) {
@@ -88,7 +85,14 @@ public class Controller implements ActionListener {
             throw new IllegalParameterException(inputParamName, "positive");
         }
 
+        if (inputParamName.equals("Risk-free rate") || inputParamName.equals("Volatility")) {
+            return convertPercentInput(result);
+        }
         return BigDecimal.valueOf(result);
+    }
+
+    private BigDecimal convertPercentInput(double percent) {
+        return BigDecimal.valueOf(percent).divide(BigDecimal.valueOf(100));
     }
 
 }
