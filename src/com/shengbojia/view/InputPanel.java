@@ -3,6 +3,9 @@ package com.shengbojia.view;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The panel where input related GUI components are displayed.
+ */
 public class InputPanel {
     private JPanel panel;
     private InputFieldAndLabel stock;
@@ -11,6 +14,9 @@ public class InputPanel {
     private InputFieldAndLabel volatility;
     private InputFieldAndLabel riskFree;
 
+    /**
+     * Class constructor
+     */
     public InputPanel() {
         panel = new JPanel();
         GridLayout layout = new GridLayout(5, 1);

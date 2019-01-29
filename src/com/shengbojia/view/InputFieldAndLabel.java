@@ -3,6 +3,10 @@ package com.shengbojia.view;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Labelled location for users to input data, indicates which parameter and what unit of measurement the data
+ * should be in.
+ */
 public class InputFieldAndLabel {
     private JPanel panel;
     private JLabel inputLabel;
@@ -10,6 +14,12 @@ public class InputFieldAndLabel {
     private JTextField inputField;
     private String inputName;
 
+    /**
+     * Class constructor specifying for which parameter is the input for as well the unit of measurement being used.
+     *
+     * @param inputName the name of the parameter
+     * @param inputUnit the unit being used
+     */
     public InputFieldAndLabel(String inputName, String inputUnit) {
         panel = new JPanel();
         panel.setLayout(new GridLayout(1, 3));

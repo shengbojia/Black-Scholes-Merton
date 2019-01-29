@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * The main window of the application on which all other GUI components are displayed.
+ */
 public class MainWindow {
     private JFrame frame;
 
@@ -11,7 +14,9 @@ public class MainWindow {
     private JButton pressToCalculate;
     private OutputPanel outputPanel;
 
-
+    /**
+     * Class constructor
+     */
     public MainWindow() {
         frame = new JFrame("Calculator");
         //frame.setSize(500, 500);
@@ -37,6 +42,11 @@ public class MainWindow {
         frame.add(outputPanel.getPanel());
     }
 
+    /**
+     * Adds a controller in the form of an action listener.
+     *
+     * @param controller the controller to be added as a listener
+     */
     public void addController(ActionListener controller) {
         pressToCalculate.addActionListener(controller);
     }

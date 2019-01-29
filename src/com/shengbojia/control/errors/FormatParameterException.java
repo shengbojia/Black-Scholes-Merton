@@ -1,5 +1,8 @@
 package com.shengbojia.control.errors;
 
+/**
+ * Signals that the user has inputted data that is not in the string format of a double.
+ */
 public class FormatParameterException extends AbstractParameterException {
 
     public FormatParameterException(String parameterName) {

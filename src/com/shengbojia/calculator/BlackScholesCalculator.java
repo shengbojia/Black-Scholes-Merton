@@ -18,18 +18,31 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 /**
- * Pricing calculator for vanilla European options
+ * Pricing calculator for vanilla European options, using the Black-Scholes-Merton model along with BigDecimal math.
+ *
+ * @author Shengbo Jia
  */
 public class BlackScholesCalculator {
 
-    private static final MathContext DEFAULT_PRECISION = new MathContext(8, RoundingMode.HALF_EVEN);
+    /**
+     * Default context used for calculations
+     */
+    public static final MathContext DEFAULT_PRECISION = new MathContext(8, RoundingMode.HALF_EVEN);
 
     private final MathContext precision;
 
+    /**
+     * Default constructor
+     */
     public BlackScholesCalculator() {
         this(DEFAULT_PRECISION);
     }
 
+    /**
+     * Constructor specifying the math context
+     *
+     * @param precision context to use
+     */
     public BlackScholesCalculator(MathContext precision) {
         this.precision = precision;
     }
@@ -38,8 +51,23 @@ public class BlackScholesCalculator {
         return precision;
     }
 
-    public BigDecimal callPricing(BigDecimal stockPrice, BigDecimal strikePrice, BigDecimal timeToMaturity,
-                                  BigDecimal volatility, BigDecimal riskFreeRate) {
+    /**
+     * Returns the calculated price of a call option based on inputted parameters.
+     *
+     * @param stockPrice big decimal value of the underlying asset price
+     * @param strikePrice big decimal value of the option strike price
+     * @param timeToMaturity big decimal value of the time to maturity, in years
+     * @param volatility big decimal value of the asset's volatility, in decimal
+     * @param riskFreeRate big decimal value of the current risk free interest rate, in decimal
+     * @return big decimal value of the calculated call price
+     */
+    public BigDecimal callPricing(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
         BigDecimal minuend = stockPrice
                 .multiply(normCdf(dOne(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate)));
 
@@ -52,8 +80,23 @@ public class BlackScholesCalculator {
         return minuend.subtract(subtrahendFactor1.multiply(subtrahendFactor2));
     }
 
-    public BigDecimal putPricing(BigDecimal stockPrice, BigDecimal strikePrice, BigDecimal timeToMaturity,
-                                 BigDecimal volatility, BigDecimal riskFreeRate) {
+    /**
+     * Returns the calculated price of a put option based on input parameters.
+     *
+     * @param stockPrice big decimal value of the underlying asset price
+     * @param strikePrice big decimal value of the option strike price
+     * @param timeToMaturity big decimal value of the time to maturity, in years
+     * @param volatility big decimal value of the asset's volatility, in decimal
+     * @param riskFreeRate big decimal value of the current risk free interest rate, in decimal
+     * @return big decimal value of the calculated put price
+     */
+    public BigDecimal putPricing(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
         BigDecimal callPrice = callPricing(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate);
 
         BigDecimal minuend = strikePrice.divide(exp(riskFreeRate.multiply(timeToMaturity), precision), precision);
@@ -61,8 +104,12 @@ public class BlackScholesCalculator {
         return callPrice.add(minuend.subtract(stockPrice));
     }
 
-    private BigDecimal dOne(BigDecimal stockPrice, BigDecimal strikePrice, BigDecimal timeToMaturity,
-                            BigDecimal volatility, BigDecimal riskFreeRate) {
+    private BigDecimal dOne(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
 
         BigDecimal a = log(stockPrice.divide(strikePrice, precision), precision);
 
@@ -75,8 +122,12 @@ public class BlackScholesCalculator {
         return numerator.divide(denominator, precision);
     }
 
-    private BigDecimal dTwo(BigDecimal stockPrice, BigDecimal strikePrice, BigDecimal timeToMaturity,
-                            BigDecimal volatility, BigDecimal riskFreeRate) {
+    private BigDecimal dTwo(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
 
         return dOne(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate)
                 .subtract(volatility.multiply(sqrt(timeToMaturity, precision)));
@@ -129,19 +180,4 @@ public class BlackScholesCalculator {
             return ONE.subtract(result);
         }
     }
-
-
-
-    /*
-    public BigDecimal putPricing(BigDecimal stockPrice, BigDecimal strikePrice, BigDecimal timeToMaturity,
-                                 BigDecimal volatility, BigDecimal riskFreeRate) {
-        BigDecimal minuend = strikePrice
-                .multiply(exp(MINUS_ONE.multiply(riskFreeRate).multiply(timeToMaturity), precision));
-
-        return minuend
-                .subtract(strikePrice)
-                .add(callPricing(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate));
-    }
-
-    */
 }

@@ -14,16 +14,33 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 
+/**
+ * Controller class that handles communication between the GUI and the calculator.
+ *
+ * @author Shengbo Jia
+ */
 public class Controller implements ActionListener {
     private BlackScholesCalculator calculator;
     private MainWindow window;
 
+    /**
+     * Class constructor
+     *
+     * @param calculator the Black Scholes calculator that will handle the logic
+     * @param window the main window of the gui
+     */
     public Controller(BlackScholesCalculator calculator, MainWindow window) {
         this.calculator = calculator;
         this.window = window;
         window.addController(this);
     }
 
+    /**
+     * Invokes when the user tells the GUI to start calculations. Calls pricing methods in the calculator using
+     * user inputted data.
+     *
+     * @param e the action event send from the GUI
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         try {

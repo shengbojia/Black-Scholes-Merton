@@ -2,10 +2,18 @@ package com.shengbojia.view;
 
 import javax.swing.*;
 
+/**
+ * Pop up window indicating an error has occurred.
+ */
 public class ErrorWindow {
     private JFrame frame;
     private JLabel errorMsg;
 
+    /**
+     * Class constructor which initializes the error window and displays the specified error.
+     *
+     * @param error the error message that is to be displayed
+     */
     public ErrorWindow(String error) {
         frame = new JFrame("Error!");
         frame.setSize(400, 200);

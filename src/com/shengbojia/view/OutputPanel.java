@@ -3,6 +3,9 @@ package com.shengbojia.view;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The panel where output is displayed to the user.
+ */
 public class OutputPanel {
     private JPanel panel;
     private JLabel callLabel;
@@ -10,8 +13,9 @@ public class OutputPanel {
     private JLabel putLabel;
     private JLabel putDisplay;
 
-    // TODO: Make this better looking
-
+    /**
+     * Class constructor
+     */
     public OutputPanel() {
         panel = new JPanel();
         panel.setLayout(new GridLayout(2, 2));
