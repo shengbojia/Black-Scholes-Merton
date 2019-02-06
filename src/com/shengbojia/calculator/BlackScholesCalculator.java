@@ -133,8 +133,6 @@ public class BlackScholesCalculator {
                 .subtract(volatility.multiply(sqrt(timeToMaturity, precision)));
     }
 
-    // TODO: Consider Greeks using this pdf
-
     private BigDecimal normPdf(BigDecimal x) {
 
         BigDecimal factor = ONE.divide(sqrt(tau(precision), precision), precision);
