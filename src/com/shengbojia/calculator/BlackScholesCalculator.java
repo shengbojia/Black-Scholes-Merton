@@ -1,21 +1,11 @@
 package com.shengbojia.calculator;
 
-import static com.shengbojia.bigmath.BigDecimalMath.MINUS_ONE;
-import static com.shengbojia.bigmath.BigDecimalMath.THREE;
-import static com.shengbojia.bigmath.BigDecimalMath.TWO;
-import static com.shengbojia.bigmath.BigDecimalMath.exp;
-import static com.shengbojia.bigmath.BigDecimalMath.log;
-import static com.shengbojia.bigmath.BigDecimalMath.sqrt;
-import static com.shengbojia.bigmath.BigDecimalMath.square;
-import static com.shengbojia.bigmath.BigDecimalMath.tau;
-
-import static java.math.BigDecimal.ONE;
-import static java.math.BigDecimal.ZERO;
-import static java.math.BigDecimal.valueOf;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+
+import static com.shengbojia.bigmath.BigDecimalMath.*;
+import static java.math.BigDecimal.*;
 
 /**
  * Pricing calculator for vanilla European options, using the Black-Scholes-Merton model along with BigDecimal math.
@@ -54,11 +44,11 @@ public class BlackScholesCalculator {
     /**
      * Returns the calculated price of a call option based on inputted parameters.
      *
-     * @param stockPrice big decimal value of the underlying asset price
-     * @param strikePrice big decimal value of the option strike price
+     * @param stockPrice     big decimal value of the underlying asset price
+     * @param strikePrice    big decimal value of the option strike price
      * @param timeToMaturity big decimal value of the time to maturity, in years
-     * @param volatility big decimal value of the asset's volatility, in decimal
-     * @param riskFreeRate big decimal value of the current risk free interest rate, in decimal
+     * @param volatility     big decimal value of the asset's volatility, in decimal
+     * @param riskFreeRate   big decimal value of the current risk free interest rate, in decimal
      * @return big decimal value of the calculated call price
      */
     public BigDecimal callPricing(
@@ -80,14 +70,82 @@ public class BlackScholesCalculator {
         return minuend.subtract(subtrahendFactor1.multiply(subtrahendFactor2));
     }
 
+    public BigDecimal callDelta(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
+        return normCdf(dOne(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate));
+    }
+
+    public BigDecimal callGamma(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
+        BigDecimal numerator = normPdf(dOne(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate));
+
+        BigDecimal denominator = stockPrice
+                .multiply(volatility)
+                .multiply(sqrt(timeToMaturity, precision));
+
+        return numerator.divide(denominator, precision);
+    }
+
+    public BigDecimal callVega(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
+        return stockPrice
+                .multiply(normPdf(dOne(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate)))
+                .multiply(sqrt(timeToMaturity, precision));
+    }
+
+    public BigDecimal callTheta(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
+        BigDecimal minuend = thetaHelper(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate);
+
+        BigDecimal exponent = exponentHelper(timeToMaturity, riskFreeRate);
+
+        BigDecimal subtrahend = riskFreeRate
+                .multiply(strikePrice)
+                .multiply(exp(exponent, precision))
+                .multiply(normCdf(dTwo(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate)));
+
+        return minuend.subtract(subtrahend);
+    }
+
+    public BigDecimal callRho(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
+        return rhoHelper(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate)
+                .multiply(normCdf(dTwo(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate)));
+    }
+
     /**
      * Returns the calculated price of a put option based on input parameters.
      *
-     * @param stockPrice big decimal value of the underlying asset price
-     * @param strikePrice big decimal value of the option strike price
+     * @param stockPrice     big decimal value of the underlying asset price
+     * @param strikePrice    big decimal value of the option strike price
      * @param timeToMaturity big decimal value of the time to maturity, in years
-     * @param volatility big decimal value of the asset's volatility, in decimal
-     * @param riskFreeRate big decimal value of the current risk free interest rate, in decimal
+     * @param volatility     big decimal value of the asset's volatility, in decimal
+     * @param riskFreeRate   big decimal value of the current risk free interest rate, in decimal
      * @return big decimal value of the calculated put price
      */
     public BigDecimal putPricing(
@@ -104,6 +162,107 @@ public class BlackScholesCalculator {
         return callPrice.add(minuend.subtract(stockPrice));
     }
 
+    public BigDecimal putDelta(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
+        return callDelta(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate)
+                .subtract(ONE);
+    }
+
+    public BigDecimal putGamma(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
+        return callGamma(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate);
+    }
+
+    public BigDecimal putVega(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
+        return callVega(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate);
+    }
+
+    public BigDecimal putTheta(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
+        BigDecimal minuend = thetaHelper(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate);
+
+        BigDecimal exponent = exponentHelper(timeToMaturity, riskFreeRate);
+
+        BigDecimal subtrahend = riskFreeRate
+                .multiply(strikePrice)
+                .multiply(exp(exponent, precision))
+                .multiply(normCdf(dTwo(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate)
+                        .multiply(MINUS_ONE)));
+
+        return minuend.subtract(subtrahend);
+    }
+
+    public BigDecimal putRho(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
+        return MINUS_ONE
+                .multiply(rhoHelper(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate))
+                .multiply(normCdf(dTwo(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate)
+                        .multiply(MINUS_ONE)));
+    }
+
+    private BigDecimal exponentHelper(BigDecimal timeToMaturity, BigDecimal riskFreeRate) {
+        return MINUS_ONE
+                .multiply(riskFreeRate)
+                .multiply(timeToMaturity);
+    }
+
+    private BigDecimal thetaHelper(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
+        BigDecimal numerator = stockPrice
+                .multiply(normPdf(dOne(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate)))
+                .multiply(volatility)
+                .multiply(MINUS_ONE);
+
+        BigDecimal denominator = TWO.multiply(sqrt(timeToMaturity, precision));
+
+        return numerator.divide(denominator, precision);
+    }
+
+    private BigDecimal rhoHelper(
+            BigDecimal stockPrice,
+            BigDecimal strikePrice,
+            BigDecimal timeToMaturity,
+            BigDecimal volatility,
+            BigDecimal riskFreeRate) {
+
+        BigDecimal exponent = exponentHelper(timeToMaturity, riskFreeRate);
+
+        return strikePrice
+                .multiply(timeToMaturity)
+                .multiply(exp(exponent, precision));
+    }
+
     private BigDecimal dOne(
             BigDecimal stockPrice,
             BigDecimal strikePrice,
@@ -113,7 +272,8 @@ public class BlackScholesCalculator {
 
         BigDecimal a = log(stockPrice.divide(strikePrice, precision), precision);
 
-        BigDecimal b = riskFreeRate.add(square(volatility).divide(TWO, precision));
+        BigDecimal b = riskFreeRate
+                .add(square(volatility).divide(TWO, precision));
 
         BigDecimal numerator = a.add(b.multiply(timeToMaturity));
 
@@ -136,7 +296,7 @@ public class BlackScholesCalculator {
     private BigDecimal normPdf(BigDecimal x) {
 
         BigDecimal factor = ONE.divide(sqrt(tau(precision), precision), precision);
-        
+
         BigDecimal exponentOfE = square(x)
                 .divide(TWO, precision)
                 .multiply(MINUS_ONE);
