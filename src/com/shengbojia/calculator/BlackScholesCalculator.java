@@ -200,17 +200,17 @@ public class BlackScholesCalculator {
             BigDecimal volatility,
             BigDecimal riskFreeRate) {
 
-        BigDecimal minuend = thetaHelper(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate);
+        BigDecimal firstAddend = thetaHelper(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate);
 
         BigDecimal exponent = exponentHelper(timeToMaturity, riskFreeRate);
 
-        BigDecimal subtrahend = riskFreeRate
+        BigDecimal secondAddend = riskFreeRate
                 .multiply(strikePrice)
                 .multiply(exp(exponent, precision))
                 .multiply(normCdf(dTwo(stockPrice, strikePrice, timeToMaturity, volatility, riskFreeRate)
                         .multiply(MINUS_ONE)));
 
-        return minuend.subtract(subtrahend);
+        return firstAddend.add(secondAddend);
     }
 
     public BigDecimal putRho(
